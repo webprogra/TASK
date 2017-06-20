@@ -1,0 +1,127 @@
+#include"stdio.h"
+typedef char DataType;
+struct BinTreeNode;
+typedef struct BinTreeNode*PBinTreeNode;
+struct BinTreeNode{
+    DataType info;
+    PBinTreeNode llink;
+    PBinTreeNode rlink;
+};
+typedef struct BinTreeNode*BinTree;
+typedef BinTree*PBinTree;
+//用于后序遍历
+typedef struct BinTreeNode*BinTree;
+typedef BinTree*PBinTree;
+typedef struct{
+    int tag;
+    BinTree t;
+}Elem;
+//创建树及相关操作
+PBinTreeNode createRest_BTree();
+PBinTree create_BTree(){
+    PBinTree pbtree=(PBinTree)malloc(sizeof(BinTree));
+    PBinTree pbtree1=pbtree;
+    if(pbtree1!=NULL){
+        *pbtree1=createRest_BTree();
+    }
+    else return pbtree;
+}
+PBinTreeNode createRest_BTree()
+{
+    PBinTreeNode pbnode;
+    char ch;
+    scanf("%c",&ch);
+    if(ch=='@') {
+            pbnode=NULL;
+            }
+    else{
+        pbnode=(PBinTreeNode)malloc(sizeof(struct BinTreeNode));
+        if(pbnode==NULL){
+            printf("out of space!");
+            return;
+        }
+        pbnode->info=ch;
+        pbnode->llink=createRest_BTree();
+        pbnode->rlink=createRest_BTree();
+    }
+    return pbnode;
+}
+PBinTreeNode leftChild_link(PBinTreeNode p){
+    if(p!=NULL){
+    return p->llink;
+    }
+    return NULL;
+}
+PBinTreeNode rightChild_link(PBinTreeNode p){
+    if(p!=NULL){
+    return p->rlink;
+    }
+    return NULL;
+}
+void deleteTree(BinTree t){
+    if(t==NULL)return NULL;
+    else{
+        deleteTree(t->llink);
+        deleteTree(t->rlink);
+        free(t);
+    }
+    return;
+}
+void deleteX(BinTree t,DataType x){
+    if(t==NULL)return;
+    else{
+        if(t->info==x){
+            deleteTree(t);
+            t=NULL;
+        }
+        else{
+            deleteX(t->llink,x);
+            deleteX(t->rlink,x);
+        }
+    }
+}
+void PreOrder(BinTree t){
+    if(t==NULL)return NULL;
+    printf("%c",t->info);
+    PreOrder(t->llink);
+    PreOrder(t->rlink);
+}
+int main(){
+    BinTree t;
+    t=create_BTree();
+    PreOrder(t);
+    deleteX(t,'a');
+    PreOrder(t);
+}
+/*Status DelChildTree(BiTree& T,TElemType x)
+{
+	if(T){
+		if(T->data==x){
+			DelBTree(T);
+			T=NULL;
+			return OK;
+		}
+		else{
+			if(DelChildTree(T->lchild,x))
+				return OK;
+			else{
+				if(DelChildTree(T->rchild,x))
+					return OK;
+				else return ERROR;
+			}
+		}
+	}
+	else return ERROR;
+}
+// 删除二叉树
+Status DelBTree(BiTree& T)
+{
+	if(T){
+		DelBTree(T->lchild);
+		DelBTree(T->rchild);
+		delete T;
+		return OK;
+	}
+	else return ERROR;
+}
+*/
