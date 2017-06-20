@@ -113,15 +113,4 @@ int main(){
 	}
 	else return ERROR;
 }
-// 删除二叉树
-Status DelBTree(BiTree& T)
-{
-	if(T){
-		DelBTree(T->lchild);
-		DelBTree(T->rchild);
-		delete T;
-		return OK;
-	}
-	else return ERROR;
-}
-*/
+
